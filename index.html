@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Form with Location</title>
+</head>
+<body>
+    <h2>Student Attendance Form</h2>
+    <form id="attendanceForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" name="studentID" required><br><br>
+
+        <input type="hidden" id="location" name="location">
+        
+        <button type="submit">Submit Attendance</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById("location").value = 
+                        position.coords.latitude + ", " + position.coords.longitude;
+                }, function(error) {
+                    alert("Location access denied. Please allow location access.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+
+        document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let name = document.getElementById("name").value;
+            let studentID = document.getElementById("studentID").value;
+            let location = document.getElementById("location").value;
+            
+            let formURL = "https://docs.google.com/forms/d/e/1MffCYIt8KBSPeXuOndkpoCkKIAU5XI7wX3Nq3UrBvcI/formResponse";  // Replace with your form's URL
+
+            let formData = new FormData();
+            formData.append("entry.780238101", name);
+            formData.append("entry.1937483457", studentID);
+            formData.append("entry.617467019", location);
+
+            fetch(formURL, {
+                method: "POST",
+                body: formData,
+                mode: "no-cors"
+            }).then(() => {
+                alert("Attendance Submitted Successfully!");
+                document.getElementById("attendanceForm").reset();
+            }).catch(error => {
+                alert("Error submitting attendance: " + error);
+            });
+        });
+    </script>
+</body>
+</html>
