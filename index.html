@@ -43,8 +43,8 @@
             let formURL = "https://docs.google.com/forms/d/1MffCYIt8KBSPeXuOndkpoCkKIAU5XI7wX3Nq3UrBvcI/formResponse";  // Replace with your form's URL
 
             let formData = new FormData();
-            formData.append("entry.780238101", name);
-            formData.append("entry.1937483457", studentID);
+            formData.append("entry.780238101", studentID);
+            formData.append("entry.1937483457", name);
             formData.append("entry.617467019", location);
 
             fetch(formURL, {
